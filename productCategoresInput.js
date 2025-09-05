@@ -1,28 +1,20 @@
-import data from "./categorieList.json" assert { type: "json" };
+import data from "./categorieList_kr_all_v1.json" assert { type: "json" };
 import ProductCategories from "./models/productCategories.js";
-import dbConnect from "./util/dbConnect.js";
+import dbConnect from "./utils/dbConnect.js";
 
 async function inputData() {
   await dbConnect();
 
-  for (const item of data.items) {
-    const parentId = Number(item.parent_category_id);
-    const catId = Number(item.category_id);
-    const name = String(item.category_name || "").trim();
-    if (!Number.isFinite(parentId) || !Number.isFinite(catId) || !name)
-      continue;
+  for (const item of data) {
+    const catId = String(item?.cId ?? "").trim();
+    const name = String(item?.cn ?? "").trim();
+
+    // 필수값 검증
+    if (!catId || !name) continue;
 
     await ProductCategories.updateOne(
-      {}, // 단일 문서
-      {
-        $addToSet: {
-          list: {
-            parent_category_id: parentId,
-            category_name: name,
-            category_id: catId,
-          },
-        },
-      },
+      { cId: catId }, // upsert 기준 키는 cId만!
+      { $set: { cn: name } }, // 이름은 최신으로 갱신
       { upsert: true }
     );
   }

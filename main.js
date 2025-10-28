@@ -33,7 +33,7 @@ const TRACKING_ID = process.env.AE_TRACKING_ID;
 const USE_SYNONYM_MAP = true;
 const SYNONYM_KEY_MAP = { 색깔: "색상" };
 
-const limit = pLimit(10); // 동시에 7개만 실행
+const limit = pLimit(7); // 동시에 7개만 실행
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  실패 무해 try/catch, 배열 정규화
@@ -480,7 +480,7 @@ async function fetchByCategory({ categoryId }) {
   const listTasks = { item: [], dataBaseRes: [] };
 
   // ---- divided[1]은 2개로 나눠서 배포
-  //  slice(0, Math.round(divided[1].length))
+  //  slice(0, Math.round(divided[1].length) / 2 )
   // slice(Math.round(divided[1].length / 2), Math.round(divided[1].length))
 
   const categoryRes = divided[5].map((item) =>

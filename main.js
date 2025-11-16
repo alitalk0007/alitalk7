@@ -483,7 +483,7 @@ async function fetchByCategory({ categoryId }) {
   // slice(Math.round(divided[1].length / 2), Math.round(divided[1].length))
 
   // ---- divided[5]은 3개로 나눠서 배포
-  slice(0, Math.round(divided[5].length / 3));
+  // slice(0, Math.round(divided[5].length / 3));
   // slice(
   //   Math.round(divided[5].length / 3),
   //   2 * Math.round(divided[5].length / 3)
